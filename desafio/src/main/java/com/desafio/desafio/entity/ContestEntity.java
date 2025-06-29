@@ -27,4 +27,37 @@ public class ContestEntity {
     )
     @Column(name = "jobs")
     private List<String> vagas;
+
+    public String getOrgao() {
+        return orgao;
+    }
+
+    public void setOrgao(String orgao) {
+        this.orgao = orgao;
+    }
+
+    public String getEdital() {
+        return edital;
+    }
+
+    public void setEdital(String edital) {
+        this.edital = edital;
+    }
+
+    public String getCodigoConcurso() {
+        return codigoConcurso;
+    }
+
+    public void setCodigoConcurso(String codigoConcurso) {
+        this.codigoConcurso = codigoConcurso;
+    }
+
+    public List<String> getVagas() {
+        return vagas;
+    }
+
+    public void setVagas(List<String> vagas) {
+        this.vagas = vagas;
+    }
 }
+

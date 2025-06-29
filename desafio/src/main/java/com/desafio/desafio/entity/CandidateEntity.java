@@ -3,6 +3,7 @@ package com.desafio.desafio.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class CandidateEntity {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false, updatable = false)
-    private LocalDate dateNasc;
+    private Date dateNasc;
 
     @Column(nullable = false, unique = true)
     private String cpf;
@@ -39,11 +40,11 @@ public class CandidateEntity {
         this.nomeCandidate = nomeCandidate;
     }
 
-    public LocalDate getDateNasc() {
+    public Date getDateNasc() {
         return dateNasc;
     }
 
-    public void setDateNasc(LocalDate dateNasc) {
+    public void setDateNasc(Date dateNasc) {
         this.dateNasc = dateNasc;
     }
 

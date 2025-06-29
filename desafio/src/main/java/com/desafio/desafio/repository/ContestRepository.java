@@ -11,4 +11,8 @@ public interface ContestRepository extends JpaRepository<ContestEntity, Long> {
 
     // Para buscar todos concursos por vaga (ex: "carpinteiro")
     List<ContestEntity> findByVagasContainingIgnoreCase(String vaga);
+
+    boolean existsByCodigoConcurso(String codigoConcurso);
+
+
 }

@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CandidateRepository extends JpaRepository<CandidateEntity, Long> {
     Optional<CandidateEntity> findByCpf(String cpf);
+    boolean existsByCpf(String cpf);
+
 }
