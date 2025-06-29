@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  desafio-postgres:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./desafio-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - desafio-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: desafio
+    ports:
+      - "5444:5432"
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge
+
+volumes:
+  desafio-data:
