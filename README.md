@@ -44,7 +44,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 - Integração com **SonarCloud** para análise automática da qualidade do código
       comando para executar a analise de forma manual
    ```bash
-      mvn clean verify sonar:sonar -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend -Dsonar.organization=pauulohfs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=859752bd619861bc7eeff6c9535af99d18f4ca1b
+      mvn clean verify sonar:sonar -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend -Dsonar.organization=pauulohfs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=859752bd619861bc7eeff6c9535af99d18f4ca1b '''
 
   Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token temporário para testes
 
