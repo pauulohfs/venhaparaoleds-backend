@@ -1,16 +1,20 @@
 # Desafio Backend - LEDS  
-*Bem-vindo!* 👋
+*Resolução do Desafio * 
 
-Neste desafio, você terá a oportunidade de demonstrar suas habilidades no desenvolvimento backend para o laboratório LEDS.
 
----
-
-## Contextualização
+## Endpoints Requisitados:
 
 Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concursos públicos e candidatos, conforme os requisitos:
 
-1. Listar os **órgãos, códigos e editais dos concursos públicos** compatíveis com o perfil do candidato, tomando como base o **CPF** informado.  
+1. Listar os **órgãos, códigos e editais dos concursos públicos** compatíveis com o perfil do candidato, tomando como base o **CPF** informado.
+ Endpoint:  
+   ```bash
+   GET /candidados/{cpf}
+
 2. Listar os **nomes, datas de nascimento e CPF** dos candidatos compatíveis com um concurso, tomando como base o **Código do Concurso**.
+ Endpoint:  
+   ```bash
+   GET /concursos/candidados/{codigoConcurso}
 
 ---
 
@@ -60,6 +64,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 - Lombok  
 - Springdoc OpenAPI (Swagger UI)  
 - Maven  
+- Docker 
 
 ---
 
