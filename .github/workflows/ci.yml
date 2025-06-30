@@ -31,14 +31,12 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven
-        working-directory: desafio   # <--- aqui ajusta se seu pom.xml estiver nessa pasta
         run: mvn clean verify --batch-mode
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1
+        uses: SonarSource/sonarcloud-github-action@master
         with:
           projectKey: pauulohfs_venhaparaoleds-backend
           organization: pauulohfs
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: desafio   # <--- idem, se o pom está dentro dessa pasta
