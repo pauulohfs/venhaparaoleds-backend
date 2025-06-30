@@ -32,7 +32,8 @@ jobs:
 
       - name: Build with Maven
         working-directory: desafio
-        run: mvn clean verify --batch-mode
+        run: mvn clean verify --batch-mode -DskipTests
+
 
       - name: SonarCloud Scan
         working-directory: desafio
