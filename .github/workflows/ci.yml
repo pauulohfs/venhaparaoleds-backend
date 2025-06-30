@@ -35,10 +35,9 @@ jobs:
         run: mvn clean verify --batch-mode
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1
-        with:
-          projectKey: pauulohfs_venhaparaoleds-backend
-          organization: pauulohfs
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         working-directory: desafio
+        run: mvn sonar:sonar \
+          -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend \
+          -Dsonar.organization=pauulohfs \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
