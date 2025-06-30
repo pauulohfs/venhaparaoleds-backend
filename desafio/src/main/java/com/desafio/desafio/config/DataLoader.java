@@ -121,6 +121,7 @@ public class DataLoader implements CommandLineRunner {
         }
 
         System.out.println("✅ Concursos importados com sucesso.");
+
     }
 
 }
