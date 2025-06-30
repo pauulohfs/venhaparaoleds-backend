@@ -70,7 +70,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 
 ## Como executar
 
-1. Configure o banco PostgreSQL com as credenciais em `application.properties`.  
+1. Com o Docker já rodando localmente, rode o docker-composer.yaml localizado em  `desafio -> database-docker -> docker-composer.yaml` 
 2. Rode o projeto via IDE ou comando:  
    ```bash
    mvn spring-boot:run
