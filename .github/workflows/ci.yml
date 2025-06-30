@@ -36,9 +36,5 @@ jobs:
 
 
       - name: SonarCloud Scan
-        working-directory: desafio
-        run: mvn sonar:sonar \
-          -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend \
-          -Dsonar.organization=pauulohfs \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn clean verify sonar:sonar -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend -Dsonar.organization=pauulohfs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
