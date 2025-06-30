@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main   # ou a branch que você usar
+      - main
   pull_request:
     branches:
       - main
@@ -31,12 +31,14 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven
+        working-directory: desafio
         run: mvn clean verify --batch-mode
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@v1
         with:
           projectKey: pauulohfs_venhaparaoleds-backend
           organization: pauulohfs
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: desafio
