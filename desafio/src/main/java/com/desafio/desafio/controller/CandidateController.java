@@ -1,29 +1,38 @@
 package com.desafio.desafio.controller;
 
+import com.desafio.desafio.dto.CandidateDTO;
 import com.desafio.desafio.entity.CandidateEntity;
 import com.desafio.desafio.entity.ContestEntity;
+import com.desafio.desafio.mapper.CandidateMapper;
 import com.desafio.desafio.service.CandidateService;
 import com.desafio.desafio.service.ContestService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+@Tag(name = "Candidatos", description = "Endpoints para gerenciar candidatos")
 @RestController
 @RequestMapping("/candidatos")
 public class CandidateController {
 
-    @Autowired
-    private CandidateService candidateService;
+    private final CandidateService candidateService;
+    private final ContestService contestService;
+    private final CandidateMapper candidateMapper;
 
-    @Autowired
-    private ContestService contestService;
+    public CandidateController(CandidateService candidateService,
+                               ContestService contestService,
+                               CandidateMapper candidateMapper) {
+        this.candidateService = candidateService;
+        this.contestService = contestService;
+        this.candidateMapper = candidateMapper;
+    }
 
-    // Endpoint para listar concursos compatíveis a partir do CPF do candidato
+    @Operation(summary = "Endpoint para listar concursos compatíveis a partir do CPF do candidato")
     @GetMapping("/{cpf}")
     public ResponseEntity<?> listarConcursosPorCpf(@PathVariable String cpf) {
         Optional<CandidateEntity> candidatoOpt = candidateService.buscarPorCpf(cpf.trim());
@@ -35,54 +44,59 @@ public class CandidateController {
         CandidateEntity candidato = candidatoOpt.get();
         List<String> profissoes = candidato.getProfissoes();
 
-        // Lista todos concursos e filtra os que têm vagas compatíveis
         List<ContestEntity> concursosCompatíveis = contestService.listarTodos().stream()
                 .filter(concurso -> concurso.getVagas().stream().anyMatch(profissoes::contains))
-                .collect(Collectors.toList());
+                .toList();
 
         return ResponseEntity.ok(concursosCompatíveis);
     }
 
-    // CREATE - POST /candidatos
     @PostMapping
-    public ResponseEntity<?> criarCandidato(@RequestBody CandidateEntity candidato) {
-        if (candidateService.buscarPorCpf(candidato.getCpf()).isPresent()) {
+    public ResponseEntity<?> criarCandidato(@RequestBody CandidateDTO candidatoDto) {
+        if (candidateService.buscarPorCpf(candidatoDto.getCpf()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("CPF já cadastrado.");
         }
-        CandidateEntity salvo = candidateService.salvar(candidato);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+
+        CandidateEntity entity = candidateMapper.toEntity(candidatoDto);
+        CandidateEntity salvo = candidateService.salvar(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(candidateMapper.toDTO(salvo));
     }
 
-    // READ ALL - GET /candidatos
     @GetMapping
-    public ResponseEntity<List<CandidateEntity>> listarTodos() {
-        List<CandidateEntity> candidatos = candidateService.listarTodos();
-        return ResponseEntity.ok(candidatos);
+    public ResponseEntity<List<CandidateDTO>> listarTodos() {
+        List<CandidateDTO> candidatosDto = candidateMapper.toDTOList(candidateService.listarTodos());
+        return ResponseEntity.ok(candidatosDto);
     }
 
-    // READ BY ID - GET /candidatos/id/{id}
     @GetMapping("/id/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
-        Optional<CandidateEntity> candidatoOpt = candidateService.buscarPorId(id);
-        if (candidatoOpt.isPresent()) {
-            return ResponseEntity.ok(candidatoOpt.get());
+        Optional<CandidateDTO> candidatoDTOOpt = candidateService.buscarPorId(id).map(candidateMapper::toDTO);
+
+        if (candidatoDTOOpt.isPresent()) {
+            return ResponseEntity.ok(candidatoDTOOpt.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Candidato não encontrado.");
         }
     }
 
-    // UPDATE - PUT /candidatos/{id}
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarCandidato(@PathVariable Long id, @RequestBody CandidateEntity candidatoAtualizado) {
-        Optional<CandidateEntity> atualizado = candidateService.atualizar(id, candidatoAtualizado);
-        if (atualizado.isPresent()) {
-            return ResponseEntity.ok(atualizado.get());
-        } else {
+    public ResponseEntity<?> atualizarCandidato(@PathVariable Long id, @RequestBody CandidateDTO candidatoDto) {
+        Optional<CandidateEntity> existenteOpt = candidateService.buscarPorId(id);
+        if (existenteOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Candidato não encontrado.");
         }
+
+        CandidateEntity existente = existenteOpt.get();
+        existente.setNomeCandidate(candidatoDto.getNomeCandidate());
+        existente.setDateNasc(candidatoDto.getDateNasc());
+        existente.setCpf(candidatoDto.getCpf());
+        existente.setProfissoes(candidatoDto.getProfissoes());
+
+        CandidateEntity atualizado = candidateService.salvar(existente);
+        return ResponseEntity.ok(candidateMapper.toDTO(atualizado));
     }
 
-    // DELETE - DELETE /candidatos/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarCandidato(@PathVariable Long id) {
         boolean deletado = candidateService.deletar(id);

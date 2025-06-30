@@ -2,6 +2,13 @@ package com.desafio.desafio.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 
 @Entity
 @Table(name = "contest")
@@ -20,6 +27,7 @@ public class ContestEntity {
     @Column(nullable = false, unique = true)
     private String codigoConcurso;
 
+
     @ElementCollection
     @CollectionTable(
             name = "jobs_contest",
@@ -28,36 +36,6 @@ public class ContestEntity {
     @Column(name = "jobs")
     private List<String> vagas;
 
-    public String getOrgao() {
-        return orgao;
-    }
 
-    public void setOrgao(String orgao) {
-        this.orgao = orgao;
-    }
-
-    public String getEdital() {
-        return edital;
-    }
-
-    public void setEdital(String edital) {
-        this.edital = edital;
-    }
-
-    public String getCodigoConcurso() {
-        return codigoConcurso;
-    }
-
-    public void setCodigoConcurso(String codigoConcurso) {
-        this.codigoConcurso = codigoConcurso;
-    }
-
-    public List<String> getVagas() {
-        return vagas;
-    }
-
-    public void setVagas(List<String> vagas) {
-        this.vagas = vagas;
-    }
 }
 

@@ -1,11 +1,20 @@
 package com.desafio.desafio.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+
+
 import java.util.Date;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 
+@Schema(hidden = true)
 @Entity
 @Table(name = "candidate")
 public class CandidateEntity {
@@ -16,6 +25,7 @@ public class CandidateEntity {
 
     @Column(nullable = false)
     private String nomeCandidate;
+
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false, updatable = false)
@@ -32,35 +42,5 @@ public class CandidateEntity {
     @Column(name = "profisse")
     private List<String> profissoes;
 
-    public String getNomeCandidate() {
-        return nomeCandidate;
-    }
 
-    public void setNomeCandidate(String nomeCandidate) {
-        this.nomeCandidate = nomeCandidate;
-    }
-
-    public Date getDateNasc() {
-        return dateNasc;
-    }
-
-    public void setDateNasc(Date dateNasc) {
-        this.dateNasc = dateNasc;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public List<String> getProfissoes() {
-        return profissoes;
-    }
-
-    public void setProfissoes(List<String> profissoes) {
-        this.profissoes = profissoes;
-    }
 }
