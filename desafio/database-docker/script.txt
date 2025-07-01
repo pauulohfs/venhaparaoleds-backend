@@ -1,0 +1,14 @@
+# 1. Parar e apagar containers e volumes antigos
+docker-compose down -v --remove-orphans
+
+# 2. Limpar imagens antigas
+docker image prune -a -f
+
+# 3. Recompilar o projeto (gera novo JAR atualizado)
+./mvnw clean package -DskipTests
+
+# 4. Rebuild sem cache (garante que copie o novo JAR)
+docker-compose build --no-cache
+
+# 5. Subir container novamente
+docker-compose up

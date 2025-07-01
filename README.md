@@ -87,7 +87,8 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 - Docker instalado e rodando (para banco PostgreSQL)  
 
 1. Com o Docker já rodando localmente, rode o docker-composer.yaml localizado em  `desafio -> database-docker -> docker-composer.yaml` 
-  isso criará o banco de dados já configurado, ultilizado pelo backend
+  isso criará  2 conteiners, o do o banco de dados já configurado a também a API Rest 
 2. Rode o projeto via IDE ou comando:  
    ```bash
-   mvn spring-boot:run
+   cd desafio/database-docker
+   docker-compose up --build

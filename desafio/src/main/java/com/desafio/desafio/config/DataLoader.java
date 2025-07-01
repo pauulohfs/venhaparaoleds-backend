@@ -9,7 +9,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,91 +36,98 @@ public class DataLoader implements CommandLineRunner {
         importarConcursos();
     }
 
-    private void importarCandidatos() throws IOException {
-        Path path = Paths.get("D:/Spring Java/leds/venhaparaoleds-backend/candidatos.txt");
+    private void importarCandidatos() {
+        Path path = Paths.get("./database-docker/candidatos.txt");
 
         if (!Files.exists(path)) {
-            throw new FileNotFoundException("Arquivo candidatos.txt não encontrado na raiz do projeto.");
+            System.out.println("⚠️ Arquivo candidatos.txt não encontrado. Importação de candidatos será ignorada.");
+            return;
         }
 
-        BufferedReader reader = Files.newBufferedReader(path);
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String linha;
 
-        String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] partes = linha.split("\t");
+                if (partes.length < 4) continue;
 
+                String nome = partes[0].trim();
+                String dataNascStr = partes[1].trim();
+                String cpf = partes[2].trim();
 
-        while ((linha = reader.readLine()) != null) {
+                List<String> profissoes = Arrays.stream(partes[3]
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
 
-            String[] partes = linha.split("\t");
-            if (partes.length < 4) continue;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataNasc = LocalDate.parse(dataNascStr, formatter);
 
-            String nome = partes[0].trim();
-            String dataNascStr = partes[1].trim();
-            String cpf = partes[2].trim();
+                if (!candidateRepository.existsByCpf(cpf)) {
+                    CandidateEntity candidato = new CandidateEntity();
+                    candidato.setNomeCandidate(nome);
+                    candidato.setDateNasc(Date.from(dataNasc.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    candidato.setCpf(cpf);
+                    candidato.setProfissoes(profissoes);
 
-            List<String> profissoes = Arrays.stream(partes[3]
-                            .replace("[", "")
-                            .replace("]", "")
-                            .split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataNasc = LocalDate.parse(dataNascStr, formatter);
-
-            if (!candidateRepository.existsByCpf(cpf)) {
-                CandidateEntity candidato = new CandidateEntity();
-                candidato.setNomeCandidate(nome);
-                candidato.setDateNasc(Date.from(dataNasc.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                candidato.setCpf(cpf);
-                candidato.setProfissoes(profissoes);
-
-                candidateRepository.save(candidato);
+                    candidateRepository.save(candidato);
+                }
             }
-        }
 
-        System.out.println("✅ Candidatos importados com sucesso.");
+            System.out.println("✅ Candidatos importados com sucesso.");
+
+        } catch (IOException e) {
+            System.err.println("❌ Erro ao importar candidatos: " + e.getMessage());
+        }
     }
 
 
-    private void importarConcursos() throws IOException {
-        Path path = Paths.get("D:/Spring Java/leds/venhaparaoleds-backend/concursos.txt");
+
+    private void importarConcursos() {
+        Path path = Paths.get("./database-docker/concursos.txt");
 
         if (!Files.exists(path)) {
-            throw new FileNotFoundException("Arquivo concursos.txt não encontrado no caminho absoluto.");
+            System.out.println("⚠️ Arquivo concursos.txt não encontrado. Importação de concursos será ignorada.");
+            return;
         }
 
-        BufferedReader reader = Files.newBufferedReader(path);
-        String linha;
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String linha;
 
-        while ((linha = reader.readLine()) != null) {
-            String[] partes = linha.split("\t");
-            if (partes.length < 4) continue;
+            while ((linha = reader.readLine()) != null) {
+                String[] partes = linha.split("\t");
+                if (partes.length < 4) continue;
 
-            String orgao = partes[0].trim();
-            String edital = partes[1].trim();
-            String codigoConcurso = partes[2].trim();
+                String orgao = partes[0].trim();
+                String edital = partes[1].trim();
+                String codigoConcurso = partes[2].trim();
 
-            List<String> vagas = Arrays.stream(partes[3]
-                            .replace("[", "")
-                            .replace("]", "")
-                            .split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+                List<String> vagas = Arrays.stream(partes[3]
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList());
 
-            // Evita duplicidade se já existir concurso com esse código
-            if (!contestRepository.existsByCodigoConcurso(codigoConcurso)) {
-                ContestEntity concurso = new ContestEntity();
-                concurso.setOrgao(orgao);
-                concurso.setEdital(edital);
-                concurso.setCodigoConcurso(codigoConcurso);
-                concurso.setVagas(vagas);
+                if (!contestRepository.existsByCodigoConcurso(codigoConcurso)) {
+                    ContestEntity concurso = new ContestEntity();
+                    concurso.setOrgao(orgao);
+                    concurso.setEdital(edital);
+                    concurso.setCodigoConcurso(codigoConcurso);
+                    concurso.setVagas(vagas);
 
-                contestRepository.save(concurso);
+                    contestRepository.save(concurso);
+                }
             }
+
+            System.out.println("✅ Concursos importados com sucesso.");
+
+        } catch (IOException e) {
+            System.err.println("❌ Erro ao importar concursos: " + e.getMessage());
         }
-
-        System.out.println("✅ Concursos importados com sucesso!.");
-
     }
+
 
 }
