@@ -19,7 +19,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 ---
 
 ## O que foi implementado
-
+- **Ao iniciar o programa, ele pega os arquivos povoados de 'candidatos.txt' e 'concursos.txt' localizados em `desafio/database-docker`  e grava tudo no banco de dados
 - **Modelagem das entidades** `Candidate` e `Contest` com persistência em banco via JPA.  
 - Criação das **camadas Controller, Service, Repository, DTO, Mapper** seguindo o padrão MVC.  
 - **Endpoints REST** para CRUD completo de candidatos e concursos.  
@@ -41,12 +41,23 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 - Projeto configurado para usar **Java 17** e Spring Boot 3.x.  
 - Padrão arquitetural **MVC** para organização e escalabilidade.
 - Projeto configurado para usar **Java 17** e Spring Boot 3.x. 
-- Integração com **SonarCloud** para análise automática da qualidade do código
+- impkementacao com **SonarCloud** para análise automática da qualidade do código
       comando para executar a analise de forma manual
    ```bash
-      mvn clean verify sonar:sonar -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend -Dsonar.organization=pauulohfs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=859752bd619861bc7eeff6c9535af99d18f4ca1b '''
+      mvn clean verify sonar:sonar -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend -Dsonar.organization=pauulohfs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=859752bd619861bc7eeff6c9535af99d18f4ca1b 
 
-  Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token temporário para testes
+- Configuração com GitHub Actions para integração contínua (CI).
+
+-Integração entre SonarCloud e GitHub Actions, de modo que toda vez que um push for realizado, a análise de qualidade de código do SonarCloud seja executada automaticamente, garantindo o monitoramento contínuo da saúde do código.
+
+Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token temporário para testes
+
+## Observações
+
+- Ao rodar o Docker Compose, o banco de dados será automaticamente povoado com os dados contidos nos arquivos .txt presentes na pasta database-docker no momento da execução.
+- Portanto, qualquer alteração nos arquivos candidatos.txt e concursos.txt antes de iniciar o compose será refletida no banco.
+- Caso os arquivos não estejam presentes, a importação será ignorada, e o banco permanecerá vazio ou com os dados existentes.
+
 
 
 
@@ -84,11 +95,11 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 
 - Java 17 instalado  
 - Maven instalado  
-- Docker instalado e rodando (para banco PostgreSQL)  
+- Docker instalado e rodando 
 
 1. Com o Docker já rodando localmente, rode o docker-composer.yaml localizado em  `desafio -> database-docker -> docker-composer.yaml` 
-  isso criará  2 conteiners, o do o banco de dados já configurado a também a API Rest 
-2. Rode o projeto via IDE ou comando:  
+  isso criará  2 conteiners, o do o banco de dados já configurado a também o serviço da API REST 
+2. Rode o docker-compose via IDE ou comando:  
    ```bash
    cd desafio/database-docker
    docker-compose up --build
