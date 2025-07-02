@@ -19,7 +19,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 ---
 
 ## O que foi implementado
-- **Ao iniciar o programa, ele pega os arquivos povoados de 'candidatos.txt' e 'concursos.txt' localizados em `desafio/database-docker`  e grava tudo no banco de dados
+
 - **Modelagem das entidades** `Candidate` e `Contest` com persistência em banco via JPA.  
 - Criação das **camadas Controller, Service, Repository, DTO, Mapper** seguindo o padrão MVC.  
 - **Endpoints REST** para CRUD completo de candidatos e concursos.  
@@ -38,32 +38,49 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
   - DTOs e mappers para isolar entidades da camada API.  
   - Validação mínima nas camadas de serviço.  
   - Código organizado e legível.  
-- Projeto configurado para usar **Java 17** e Spring Boot 3.x.  
 - Padrão arquitetural **MVC** para organização e escalabilidade.
-- Projeto configurado para usar **Java 17** e Spring Boot 3.x. 
-- impkementacao com **SonarCloud** para análise automática da qualidade do código
-      comando para executar a analise de forma manual
+- **Testes unitários** e **Testes de Integração**
+      comando para executar a pilha de testes via IDE ou comando:  
+   ```bash
+      mvn test
+- implementacao com **SonarCloud** para análise automática da qualidade do código
+      comando para executar a analise de forma manual via IDE ou comando:  
    ```bash
       mvn clean verify sonar:sonar -Dsonar.projectKey=pauulohfs_venhaparaoleds-backend -Dsonar.organization=pauulohfs -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=859752bd619861bc7eeff6c9535af99d18f4ca1b 
 
-- Configuração com GitHub Actions para integração contínua (CI).
+- Configuração com **GitHub Actions** para integração contínua (CI).
 
--Integração entre SonarCloud e GitHub Actions, de modo que toda vez que um push for realizado, a análise de qualidade de código do SonarCloud seja executada automaticamente, garantindo o monitoramento contínuo da saúde do código.
+- Integração entre **SonarCloud** e **GitHub Actions**, de modo que toda vez que um push for realizado, a análise de qualidade de código do SonarCloud seja executada automaticamente, garantindo o monitoramento contínuo da saúde do código.
 
 Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token temporário para testes
 
 ## Observações
 
 - Ao rodar o Docker Compose, o banco de dados será automaticamente povoado com os dados contidos nos arquivos .txt presentes na pasta database-docker no momento da execução.
+     'candidatos.txt' e 'concursos.txt' localizados em `desafio/database-docker` 
 - Portanto, qualquer alteração nos arquivos candidatos.txt e concursos.txt antes de iniciar o compose será refletida no banco.
 - Caso os arquivos não estejam presentes, a importação será ignorada, e o banco permanecerá vazio ou com os dados existentes.
 
 
-
-
-
-
 ---
+
+## Detalhes da implementação dos testes efetuados
+- ** Testes Unitarios: ** 
+  Nosso foco inicial foi desenvolver testes unitários para a camada de serviço, onde testamos a lógica de negócio isoladamente. Utilizamos o framework JUnit junto com Mockito para criar mocks das dependências, como os repositórios e outros serviços, permitindo testar os métodos do CandidateService sem precisar acessar o banco de dados real.
+  Esses testes verificam se os métodos do serviço:
+  Buscam candidatos por ID e CPF corretamente;
+  Listam todos os candidatos;
+  Salvam candidatos aplicando as regras de negócio esperadas;
+  Tratam situações como candidatos inexistentes.
+
+- ** Teste de Integração: ** 
+ Após validar a camada de serviço, avançamos para testes de integração para garantir que a API REST está funcionando de ponta a ponta. Implementamos testes com o Spring Boot Test e  MockMvc para simular requisições HTTP aos endpoints do CandidateController.
+  Nos testes de integração, cobrimos cenários importantes como:
+  Listagem de todos os candidatos via endpoint GET /candidatos;
+  Busca de candidato por ID via GET /candidatos/id/{id};
+  Validação do retorno 404 quando o candidato não é encontrado;
+  Criação de um novo candidato via POST /candidatos, verificando se o candidato é salvo corretamente e se a resposta HTTP é adequada.
+
 
 ## Estrutura do Projeto
 
@@ -82,24 +99,24 @@ Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token t
 - **Java 17**  
 - **Spring Boot 3.5.3**  
 - **Spring Data JPA**  
-- **PostgreSQL** (Banco principal)  
+- **PostgreSQL** 
 - **Lombok** (para reduzir boilerplate)  
 - **Springdoc OpenAPI** (Swagger para documentação da API)  
-- **Maven** (Gerenciador de dependências e build)  
-- **Docker** (para containerização do banco de dados)  
+- **Mockito** (simulação de comportamentos em testes unitários)
+- **Docker** (conteinização da Aplicação e do Banco de Dados)
+
 
 ---
 
-## Como executar
 ### Pré-requisitos
 
 - Java 17 instalado  
 - Maven instalado  
 - Docker instalado e rodando 
 
-1. Com o Docker já rodando localmente, rode o docker-composer.yaml localizado em  `desafio -> database-docker -> docker-composer.yaml` 
+## Como executar
+1. Com o Docker já rodando localmente, rode o **docker-composer.yaml** localizado em  `desafio -> database-docker -> docker-composer.yaml` 
   isso criará  2 conteiners, o do o banco de dados já configurado a também o serviço da API REST 
 2. Rode o docker-compose via IDE ou comando:  
    ```bash
-   cd desafio/database-docker
-   docker-compose up --build
+   cd desafio/database-docker docker-compose up --build
