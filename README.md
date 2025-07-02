@@ -1,5 +1,5 @@
 # Desafio Backend - LEDS  
-*Resolução do Desafio * 
+**Resolução do Desafio**
 
 
 ## Endpoints Requisitados:
@@ -36,7 +36,6 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
   - Nomes claros e consistentes.  
   - Responsabilidades bem definidas (separação Controller, Service, Repository).  
   - DTOs e mappers para isolar entidades da camada API.  
-  - Validação mínima nas camadas de serviço.  
   - Código organizado e legível.  
 - Padrão arquitetural **MVC** para organização e escalabilidade.
 - **Testes unitários** e **Testes de Integração**
@@ -52,8 +51,6 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 
 - Integração entre **SonarCloud** e **GitHub Actions**, de modo que toda vez que um push for realizado, a análise de qualidade de código do SonarCloud seja executada automaticamente, garantindo o monitoramento contínuo da saúde do código.
 
-Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token temporário para testes
-
 ## Observações
 
 - Ao rodar o Docker Compose, o banco de dados será automaticamente povoado com os dados contidos nos arquivos .txt presentes na pasta database-docker no momento da execução.
@@ -61,14 +58,12 @@ Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token t
 - Portanto, qualquer alteração nos arquivos candidatos.txt e concursos.txt antes de iniciar o compose será refletida no banco.
 - Caso os arquivos não estejam presentes, a importação será ignorada, e o banco permanecerá vazio ou com os dados existentes.
 - Se entrarmos na Pagina do Actions do Git em : https://github.com/pauulohfs/venhaparaoleds-backend/actions/runs/16032043562/job/45234768719 
-  observaremos que na build antes de completar a tarefa  "Complete job", foi projeto foi scaneado pelo SonarCloud na tarefa "SonarCloud Scan" 
-
-
+  observaremos que na build antes de completar a tarefa  "Complete job", o projeto foi scaneado pelo SonarCloud na tarefa "SonarCloud Scan" 
 
 ---
 
 ## Detalhes da implementação dos testes efetuados
-- ** Testes Unitarios: ** 
+- **Testes Unitarios:** 
   Nosso foco inicial foi desenvolver testes unitários para a camada de serviço, onde testamos a lógica de negócio isoladamente. Utilizamos o framework JUnit junto com Mockito para criar mocks das dependências, como os repositórios e outros serviços, permitindo testar os métodos do CandidateService sem precisar acessar o banco de dados real.
   Esses testes verificam se os métodos do serviço:
   Buscam candidatos por ID e CPF corretamente;
@@ -76,8 +71,8 @@ Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token t
   Salvam candidatos aplicando as regras de negócio esperadas;
   Tratam situações como candidatos inexistentes.
 
-- ** Teste de Integração: ** 
- Após validar a camada de serviço, avançamos para testes de integração para garantir que a API REST está funcionando de ponta a ponta. Implementamos testes com o Spring Boot Test e  MockMvc para simular requisições HTTP aos endpoints do CandidateController.
+- **Teste de Integração:** 
+  Após validar a camada de serviço, avançamos para testes de integração para garantir que a API REST está funcionando de ponta a ponta. Implementamos testes com o Spring Boot Test e  MockMvc para simular requisições HTTP aos endpoints do CandidateController.
   Nos testes de integração, cobrimos cenários importantes como:
   Listagem de todos os candidatos via endpoint GET /candidatos;
   Busca de candidato por ID via GET /candidatos/id/{id};
@@ -118,7 +113,7 @@ Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token t
 - Docker instalado e rodando 
 
 ## Como executar
-1. Com o Docker já rodando localmente, rode o **docker-composer.yaml** localizado em  `desafio -> database-docker -> docker-composer.yaml` 
+1. Com o Docker já rodando localmente, rode o **docker-composer.yaml** localizado em  `desafio -> database-docker -> docker-compose.yaml` 
   isso criará  2 conteiners, o do o banco de dados já configurado a também o serviço da API REST 
 2. Rode o docker-compose via IDE ou comando:  
    ```bash
