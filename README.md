@@ -18,6 +18,20 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 
 ---
 
+## Tecnologias Utilizadas
+
+- **Java 17**  
+- **Spring Boot 3.5.3**  
+- **Spring Data JPA**  
+- **PostgreSQL** 
+- **Lombok** (para reduzir boilerplate)  
+- **Springdoc OpenAPI** (Swagger para documentação da API)  
+- **Mockito** (simulação de comportamentos em testes unitários)
+- **Docker** (conteinização da Aplicação e do Banco de Dados)
+
+
+---
+
 ## O que foi implementado
 
 - **Modelagem das entidades** `Candidate` e `Contest` com persistência em banco via JPA.  
@@ -51,6 +65,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 
 - Integração entre **SonarCloud** e **GitHub Actions**, de modo que toda vez que um push for realizado, a análise de qualidade de código do SonarCloud seja executada automaticamente, garantindo o monitoramento contínuo da saúde do código.
 
+
 ## Observações
 
 - Ao rodar o Docker Compose, o banco de dados será automaticamente povoado com os dados contidos nos arquivos .txt presentes na pasta database-docker no momento da execução.
@@ -59,6 +74,8 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 - Caso os arquivos não estejam presentes, a importação será ignorada, e o banco permanecerá vazio ou com os dados existentes.
 - Se entrarmos na Pagina do Actions do Git em : https://github.com/pauulohfs/venhaparaoleds-backend/actions/runs/16032043562/job/45234768719 
   observaremos que na build antes de completar a tarefa  "Complete job", o projeto foi scaneado pelo SonarCloud na tarefa "SonarCloud Scan" 
+- Para acessar a documentação da API acesse o link :  http://localhost:8080/swagger-ui/index.html com o projeto em execução
+
 
 ---
 
@@ -92,19 +109,7 @@ Desenvolvemos uma aplicação backend que realiza buscas relacionadas a concurso
 | `controller`   | Endpoints REST que expõem a API.              |
 | `config`       | Configurações da aplicação e integrações.    |
 
-## Tecnologias Utilizadas
 
-- **Java 17**  
-- **Spring Boot 3.5.3**  
-- **Spring Data JPA**  
-- **PostgreSQL** 
-- **Lombok** (para reduzir boilerplate)  
-- **Springdoc OpenAPI** (Swagger para documentação da API)  
-- **Mockito** (simulação de comportamentos em testes unitários)
-- **Docker** (conteinização da Aplicação e do Banco de Dados)
-
-
----
 
 ### Pré-requisitos
 

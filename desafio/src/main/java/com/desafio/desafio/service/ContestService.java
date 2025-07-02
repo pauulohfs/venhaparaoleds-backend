@@ -13,11 +13,15 @@ import java.util.Optional;
 @Service
 public class ContestService {
 
-    @Autowired
-    private ContestRepository contestRepository;
 
-    @Autowired
-    private CandidateRepository candidateRepository;
+    private final ContestRepository contestRepository;
+
+    public ContestService(ContestRepository contestRepository, CandidateRepository candidateRepository) {
+        this.contestRepository = contestRepository;
+        this.candidateRepository = candidateRepository;
+    }
+
+    private final  CandidateRepository candidateRepository;
 
     // Salvar novo concurso
     public ContestEntity salvar(ContestEntity contest) {

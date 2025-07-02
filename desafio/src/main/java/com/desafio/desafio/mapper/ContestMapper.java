@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContestMapper {
 
-    public static ContestDTO toDTO(ContestEntity entity) {
+    public  ContestDTO toDTO(ContestEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -20,7 +20,7 @@ public class ContestMapper {
         return dto;
     }
 
-    public static ContestEntity toEntity(ContestDTO dto) {
+    public  ContestEntity toEntity(ContestDTO dto) {
         if (dto == null) {
             return null;
         }

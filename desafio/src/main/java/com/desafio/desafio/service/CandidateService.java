@@ -11,8 +11,13 @@ import java.util.Optional;
 @Service
 public class CandidateService {
 
-    @Autowired
-    private CandidateRepository candidateRepository;
+
+    private final CandidateRepository candidateRepository;
+
+
+    public CandidateService(CandidateRepository candidateRepository) {
+        this.candidateRepository = candidateRepository;
+    }
 
     // Salvar novo candidato
     public CandidateEntity salvar(CandidateEntity candidato) {

@@ -4,7 +4,6 @@ import com.desafio.desafio.entity.CandidateEntity;
 import com.desafio.desafio.entity.ContestEntity;
 import com.desafio.desafio.repository.CandidateRepository;
 import com.desafio.desafio.repository.ContestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -24,11 +23,15 @@ import java.util.stream.Collectors;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    @Autowired
-    private CandidateRepository candidateRepository;
+    private final CandidateRepository candidateRepository;
 
-    @Autowired
-    private ContestRepository contestRepository;
+
+    private final  ContestRepository contestRepository;
+
+    public DataLoader(CandidateRepository candidateRepository, ContestRepository contestRepository) {
+        this.candidateRepository = candidateRepository;
+        this.contestRepository = contestRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
