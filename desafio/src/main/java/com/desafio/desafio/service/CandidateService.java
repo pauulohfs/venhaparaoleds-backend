@@ -52,4 +52,12 @@ public class CandidateService {
             return true;
         }).orElse(false);
     }
+
+    public CandidateEntity salvarSeNaoExistir(CandidateEntity candidato) {
+        if (candidateRepository.existsByCpf(candidato.getCpf())) {
+            return null;
+        }
+        return candidateRepository.save(candidato);
+    }
+
 }

@@ -2,7 +2,9 @@ package com.desafio.desafio.mapper;
 
 import com.desafio.desafio.dto.ContestDTO;
 import com.desafio.desafio.entity.ContestEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ContestMapper {
 
     public static ContestDTO toDTO(ContestEntity entity) {
