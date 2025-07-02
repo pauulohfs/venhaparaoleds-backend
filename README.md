@@ -60,6 +60,9 @@ Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token t
      'candidatos.txt' e 'concursos.txt' localizados em `desafio/database-docker` 
 - Portanto, qualquer alteração nos arquivos candidatos.txt e concursos.txt antes de iniciar o compose será refletida no banco.
 - Caso os arquivos não estejam presentes, a importação será ignorada, e o banco permanecerá vazio ou com os dados existentes.
+- Se entrarmos na Pagina do Actions do Git em : https://github.com/pauulohfs/venhaparaoleds-backend/actions/runs/16032043562/job/45234768719 
+  observaremos que na build antes de completar a tarefa  "Complete job", foi projeto foi scaneado pelo SonarCloud na tarefa "SonarCloud Scan" 
+
 
 
 ---
@@ -120,3 +123,5 @@ Observação :  o "login=859752bd619861bc7eeff6c9535af99d18f4ca1b" é um token t
 2. Rode o docker-compose via IDE ou comando:  
    ```bash
    cd desafio/database-docker docker-compose up --build
+3. Alternativamente, você pode rodar o projeto diretamente pela sua IDE (como IntelliJ) sem usar Docker.
+Basta dar Run no projeto Spring Boot (DesafioApplication.java) que o backend será iniciado normalmente, desde que o banco esteja disponível.
