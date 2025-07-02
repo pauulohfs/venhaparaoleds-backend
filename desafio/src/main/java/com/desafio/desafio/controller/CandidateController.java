@@ -8,6 +8,8 @@ import com.desafio.desafio.service.CandidateService;
 import com.desafio.desafio.service.ContestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,14 @@ public class CandidateController {
         this.candidateMapper = candidateMapper;
     }
 
-    @Operation(summary = "Endpoint para listar concursos compatíveis a partir do CPF do candidato")
+    @Operation(
+            summary = "Listar concursos compatíveis pelo CPF do candidato",
+            description = "Retorna concursos públicos compatíveis com as profissões do candidato informado via CPF."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Concursos compatíveis encontrados"),
+            @ApiResponse(responseCode = "404", description = "Candidato não encontrado")
+    })
     @GetMapping("/{cpf}")
     public ResponseEntity<?> listarConcursosPorCpf(@PathVariable String cpf) {
         Optional<CandidateEntity> candidatoOpt = candidateService.buscarPorCpf(cpf.trim());
@@ -51,6 +60,14 @@ public class CandidateController {
         return ResponseEntity.ok(concursosCompatíveis);
     }
 
+    @Operation(
+            summary = "Cadastrar novo candidato",
+            description = "Cria um novo candidato no banco de dados."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Candidato criado com sucesso"),
+            @ApiResponse(responseCode = "409", description = "CPF já cadastrado")
+    })
     @PostMapping
     public ResponseEntity<?> criarCandidato(@RequestBody CandidateDTO candidatoDto) {
         if (candidateService.buscarPorCpf(candidatoDto.getCpf()).isPresent()) {
@@ -62,12 +79,24 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(candidateMapper.toDTO(salvo));
     }
 
+    @Operation(
+            summary = "Listar todos os candidatos",
+            description = "Retorna uma lista com todos os candidatos cadastrados."
+    )
     @GetMapping
     public ResponseEntity<List<CandidateDTO>> listarTodos() {
         List<CandidateDTO> candidatosDto = candidateMapper.toDTOList(candidateService.listarTodos());
         return ResponseEntity.ok(candidatosDto);
     }
 
+    @Operation(
+            summary = "Buscar candidato por ID",
+            description = "Retorna um candidato específico com base no ID informado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Candidato encontrado"),
+            @ApiResponse(responseCode = "404", description = "Candidato não encontrado")
+    })
     @GetMapping("/id/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         Optional<CandidateDTO> candidatoDTOOpt = candidateService.buscarPorId(id).map(candidateMapper::toDTO);
@@ -79,7 +108,14 @@ public class CandidateController {
         }
     }
 
-
+    @Operation(
+            summary = "Atualizar candidato existente",
+            description = "Atualiza os dados de um candidato com base no ID informado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Candidato atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Candidato não encontrado")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarCandidato(@PathVariable Long id, @RequestBody CandidateDTO candidatoDto) {
         Optional<CandidateEntity> existenteOpt = candidateService.buscarPorId(id);
@@ -97,6 +133,14 @@ public class CandidateController {
         return ResponseEntity.ok(candidateMapper.toDTO(atualizado));
     }
 
+    @Operation(
+            summary = "Deletar candidato por ID",
+            description = "Remove um candidato existente com base no ID informado."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Candidato deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Candidato não encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarCandidato(@PathVariable Long id) {
         boolean deletado = candidateService.deletar(id);
